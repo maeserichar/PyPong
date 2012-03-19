@@ -88,6 +88,35 @@ def texto(texto, posx, posy, color = (255,255,255)):
 	salida_rect.centerx = posx
 	salida_rect.centery = posy
 	return salida,salida_rect
+
+def show_start_screen(screen, pala_jug, pala_cpu, background_image, puntos):
+	p_jug, p_jug_rect = texto(str(puntos[0]), WIDTH / 4, 40)
+	p_cpu, p_cpu_rect = texto(str(puntos[1]), WIDTH - WIDTH / 4, 40)
+	
+	screen.blit(background_image, (0,0))
+	screen.blit(p_jug, p_jug_rect)
+	screen.blit(p_cpu, p_cpu_rect)
+	screen.blit(pala_jug.image, pala_jug.rect)
+	screen.blit(pala_cpu.image, pala_cpu.rect)
+	
+	Start_text, Start_text_rect = texto('PyPong', WIDTH / 2, HEIGHT / 2, )
+	screen.blit(Start_text, Start_text_rect)
+	Continue_text, Continue_text_rect = texto("Press any key to continue", WIDTH / 2, Start_text_rect.centery + 30)
+	screen.blit(Continue_text, Continue_text_rect)
+	
+	pygame.display.flip()
+
+def show_game_screen(screen, bola, pala_jug, pala_cpu, background_image, puntos):
+	p_jug, p_jug_rect = texto(str(puntos[0]), WIDTH / 4, 40)
+	p_cpu, p_cpu_rect = texto(str(puntos[1]), WIDTH - WIDTH / 4, 40)
+	
+	screen.blit(background_image, (0,0))
+	screen.blit(p_jug, p_jug_rect)
+	screen.blit(p_cpu, p_cpu_rect)
+	screen.blit(bola.image, bola.rect)
+	screen.blit(pala_jug.image, pala_jug.rect)
+	screen.blit(pala_cpu.image, pala_cpu.rect)
+	pygame.display.flip()
 # ----------------------------------------------------------------------
 
 def main():
@@ -103,6 +132,15 @@ def main():
 	
 	puntos = [0, 0]
 	
+	start = False
+	
+	while not start:
+		show_start_screen(screen, pala_jug, pala_cpu, background_image, puntos)
+		
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN:
+				start = True
+	
 	while True:
 		time = clock.tick(60)
 		keys = pygame.key.get_pressed()
@@ -115,16 +153,7 @@ def main():
 		pala_jug.mover(time,keys)
 		pala_cpu.ia(time, bola)
 		
-		p_jug, p_jug_rect = texto(str(puntos[0]), WIDTH / 4, 40)
-		p_cpu, p_cpu_rect = texto(str(puntos[1]), WIDTH - WIDTH / 4, 40)
-		
-		screen.blit(background_image, (0,0))
-		screen.blit(p_jug, p_jug_rect)
-		screen.blit(p_cpu, p_cpu_rect)
-		screen.blit(bola.image, bola.rect)
-		screen.blit(pala_jug.image, pala_jug.rect)
-		screen.blit(pala_cpu.image, pala_cpu.rect)
-		pygame.display.flip()
+		show_game_screen(screen, bola, pala_jug, pala_cpu, background_image, puntos)
 	return 0
 
 if __name__ == '__main__':
