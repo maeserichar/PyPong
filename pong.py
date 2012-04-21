@@ -1,15 +1,14 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Modulos
+# Modules
 import sys,pygame
-from pygame.locals import *
 
 # Constantes
 WIDTH = 640
 HEIGHT = 480
 
-# Clases
+# Classess
 # ----------------------------------------------------------------------
 class Bola(pygame.sprite.Sprite):
 	def __init__(self):
@@ -45,19 +44,19 @@ class Bola(pygame.sprite.Sprite):
 
 class Pala(pygame.sprite.Sprite):
 	def __init__ (self, x):
-		 pygame.sprite.Sprite.__init__(self)
-		 self.image = load_image("images/pala.png")
-		 self.rect = self.image.get_rect()
-		 self.rect.centerx = x
-		 self.rect.centery = HEIGHT / 2
-		 self.speed = 0.5
+		pygame.sprite.Sprite.__init__(self)
+		self.image = load_image("images/pala.png")
+		self.rect = self.image.get_rect()
+		self.rect.centerx = x
+		self.rect.centery = HEIGHT / 2
+		self.speed = 0.5
 	
 	def mover(self, time, keys):
 		if self.rect.top >= 0:
-			if keys[K_UP]:
+			if keys[pygame.K_UP]:
 				self.rect.centery -= self.speed * time
 		if self.rect.bottom <= HEIGHT:
-			if keys[K_DOWN]:
+			if keys[pygame.K_DOWN]:
 				self.rect.centery += self.speed * time
 	
 	def ia(self, time, ball):
@@ -78,7 +77,7 @@ def load_image(filename, transparent = False):
 	image = image.convert()
 	if transparent:
 		color = image.get_at((0,0))
-		image.set_colorkey(color, RLEACCEL)
+		image.set_colorkey(color, pygame.RLEACCEL)
 	return image
 
 def texto(texto, posx, posy, color = (255,255,255)):
@@ -128,9 +127,9 @@ def main():
 	pala_jug = Pala(30)
 	pala_cpu = Pala(WIDTH - 30)
 	
-	clock = pygame.time.Clock()
-	
 	puntos = [0, 0]
+	
+	clock = pygame.time.Clock()
 	
 	start = False
 	
@@ -141,12 +140,14 @@ def main():
 			if event.type == pygame.KEYDOWN:
 				start = True
 	
+	# This call comes here in order to initialize the clock
+	time = clock.tick(60)
 	while True:
 		time = clock.tick(60)
 		keys = pygame.key.get_pressed()
 		
 		for eventos in pygame.event.get():
-			if eventos.type == QUIT:
+			if eventos.type == pygame.QUIT:
 				sys.exit(0)
 		
 		bola.actualizar(time, pala_jug, pala_cpu, puntos)
